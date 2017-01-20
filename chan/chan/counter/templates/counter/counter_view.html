@@ -1,0 +1,14 @@
+<html>
+  <body>
+    Counter.
+  </body>
+
+  <script>
+    socket = new WebSocket("ws://" + window.location.host);
+    socket.onmessage = function(e) {
+      console.log("Got response: ", e.data);
+    }
+
+    console.log("Created socket:", socket);
+  </script>
+</html>
