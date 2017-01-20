@@ -21,3 +21,11 @@ active the page displays task state instead of the form.
 
 Also, the page shows the final update from all tasks executed in
 context of its session.
+
+
+Upgrade
+-------
+
+Let the user specify additional ID as part of URL.  Instead of one
+task per entire session, the user can run one task per each
+combination of (session, ID).
