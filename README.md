@@ -23,9 +23,18 @@ Also, the page shows the final update from all tasks executed in
 context of its session.
 
 
-Upgrade
--------
+Upgrades
+--------
+
+1. Handle lost tasks
+
+Introduce a way to "drop" a task.
+
+Handle dropped tasks by re-sending a task from the frontend.
+
+2. IDs
 
 Let the user specify additional ID as part of URL.  Instead of one
 task per entire session, the user can run one task per each
 combination of (session, ID).
+
