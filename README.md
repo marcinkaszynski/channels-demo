@@ -27,15 +27,13 @@ Upgrades
 --------
 
 - Handle multi-server setups
-- Handle lost tasks
-
-  Introduce a way to "drop" a task.
-  Handle dropped tasks by re-sending a task from the frontend.
-
+- Handle lost tasks by re-sending a task from the frontend
+- Authenticate backend (worker) connections
+- Tests
 - IDs
 
   Let the user specify additional ID as part of URL.  Instead of one
   task per entire session, the user can run one task per each
   combination of (session, ID).
 
-- WebSocket polyfill (SockJS?)
+- WebSocket polyfill
