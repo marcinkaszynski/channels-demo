@@ -34,7 +34,8 @@ connected browsers receive updates about the state of current task.
 Potential upgrades
 ------------------
 
-- Tie tasks to http sessions
+- Tie tasks to http sessions (show updates only to the one who sent
+  the request)
 - Tests
 - IDs
 
