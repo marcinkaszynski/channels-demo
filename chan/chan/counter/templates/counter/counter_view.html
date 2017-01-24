@@ -5,6 +5,7 @@
     <style>
       #log {
         height: 10em;
+        overflow: auto;
       }
       #log p {
         margin: 0;
@@ -14,7 +15,10 @@
   </head>
   <body>
     <div id="form">
-      <p><label for="seconds">Seconds [unvalidated, falls back to 0]:</label> <input id="seconds" type="text"></p>
+      <p>
+        <label for="seconds">Seconds [unvalidated, falls back to 0]:</label>
+        <input id="seconds" type="text" value="2"/>
+      </p>
       <p><button onClick="send_request()">Send request</button></p>
     </div>
 
