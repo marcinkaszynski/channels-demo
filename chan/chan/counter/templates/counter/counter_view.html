@@ -1,14 +1,25 @@
+{% load static %}
 <html>
+  <head>
+    <script src="{% static "chan.js" %}"></script>
+    <style>
+      #log {
+        height: 10em;
+      }
+      #log p {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
   <body>
-    Counter.
+    <div id="form">
+      <p><label for="seconds">Seconds [unvalidated, falls back to 0]:</label> <input id="seconds" type="text"></p>
+      <p><button onClick="send_request()">Send request</button></p>
+    </div>
+
+    <div id="log">
+      <p>Loading...</p>
+    </div>
   </body>
-
-  <script>
-    socket = new WebSocket("ws://" + window.location.host);
-    socket.onmessage = function(e) {
-      console.log("Got response: ", e.data);
-    }
-
-    console.log("Created socket:", socket);
-  </script>
 </html>

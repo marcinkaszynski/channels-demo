@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import sys
+
+IN_RUNSERVER = 'runserver' in sys.argv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -120,12 +122,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "chan" ,"static"),
+]
 
 # Channels
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "chan.routing.channel_routing",
+if IN_RUNSERVER:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "asgiref.inmemory.ChannelLayer",
+            "ROUTING": "chan.routing.runserver_channel_routing",
+        }
     }
-}
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "asgi_redis.RedisChannelLayer",
+            "ROUTING": "chan.routing.default_channel_routing",
+            "CONFIG": {
+                "hosts": [("localhost", 40001)],
+            }
+        },
+        "backend": {
+            "BACKEND": "asgi_redis.RedisChannelLayer",
+            "ROUTING": "chan.routing.backend_channel_routing",
+            "CONFIG": {
+                "hosts": [("localhost", 40002)],
+            }
+        }
+    }
