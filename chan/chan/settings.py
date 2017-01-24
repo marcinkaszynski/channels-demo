@@ -123,7 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "chan" ,"static"),
+    os.path.join(BASE_DIR, "chan", "static"),
 ]
 
 # Channels
@@ -132,21 +132,21 @@ if IN_RUNSERVER:
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "asgiref.inmemory.ChannelLayer",
-            "ROUTING": "chan.routing.runserver_channel_routing",
+            "ROUTING": "chan.routing.channel_routing",
         }
     }
 else:
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "asgi_redis.RedisChannelLayer",
-            "ROUTING": "chan.routing.default_channel_routing",
+            "ROUTING": "chan.routing.channel_routing",
             "CONFIG": {
                 "hosts": [("localhost", 40001)],
             }
         },
         "backend": {
             "BACKEND": "asgi_redis.RedisChannelLayer",
-            "ROUTING": "chan.routing.backend_channel_routing",
+            "ROUTING": "chan.routing.channel_routing",
             "CONFIG": {
                 "hosts": [("localhost", 40002)],
             }

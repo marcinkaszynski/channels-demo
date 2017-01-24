@@ -1,14 +1,9 @@
-from channels.routing import route_class
-from .counter.consumers import BackConsumer, FrontConsumer, WorkerConsumer
+from channels.routing import route, route_class
+from .counter.consumers import counter_request, counter_response, WebsocketConsumer
 
 
-default_channel_routing = [
-    route_class(FrontConsumer, path='/front/'),
+channel_routing = [
+    route_class(WebsocketConsumer, path='/front/'),
+    route("backend.counter-request", counter_request),
+    route("backend.counter-response", counter_response),
 ]
-
-backend_channel_routing = [
-    route_class(BackConsumer),
-    route_class(WorkerConsumer),
-]
-
-runserver_channel_routing = default_channel_routing + backend_channel_routing

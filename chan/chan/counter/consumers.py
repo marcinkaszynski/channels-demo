@@ -5,7 +5,7 @@ from channels import Channel, Group
 from channels.generic.websockets import BaseConsumer, JsonWebsocketConsumer
 
 
-class FrontConsumer(JsonWebsocketConsumer):
+class WebsocketConsumer(JsonWebsocketConsumer):
     """Consumer for browser-facing channels.
     """
 
@@ -37,36 +37,25 @@ class FrontConsumer(JsonWebsocketConsumer):
         Group("status-updates").discard(self.message.reply_channel)
 
 
-class BackConsumer(BaseConsumer):
-    """Consumer for backend(worker)-facing channels.
-    """
-    method_mapping = {
-        "backend.counter-response": "counter_response",
-    }
-
-    def counter_response(self, message, **kwargs):
-        print(f"BackConsumer.counter_response {message}")
-        Group("status-updates").send({'text': json.dumps(message.content)},
-                                     immediately=True)
+def counter_response(message, **kwargs):
+    print(f"counter_response {message}")
+    Group("status-updates").send({'text': json.dumps(message.content)},
+                                 immediately=True)
 
 
-class WorkerConsumer(BaseConsumer):
-    method_mapping = {
-        "backend.counter-request": "counter",
-    }
+def counter_request(message, **kwargs):
+    seconds = message.content.get("seconds", 0)
+    print(f"counter_request {message.content}, counting to {seconds}")
+    for i in range(seconds):
+        send_update(i, seconds)
+        time.sleep(1)
+    send_update(seconds, seconds)
 
-    def counter(self, message, **kwargs):
-        seconds = message.content.get("seconds", 0)
-        print(f"BackConsumer.request {message.content}, counting to {seconds}")
-        for i in range(seconds):
-            self.send_update(i, seconds)
-            time.sleep(1)
-        self.send_update(seconds, seconds)
 
-    def send_update(self, step, total):
-        msg = {'command': 'update', 'step': step, 'total': total}
-        print(f"BackConsumer.send_update({step}, {total}): {msg}")
+def send_update(step, total):
+    msg = {'command': 'update', 'step': step, 'total': total}
+    print(f"send_update({step}, {total}): {msg}")
 
-        from chan.asgi import backend
-        Channel("backend.counter-response", channel_layer=backend).send(msg,
-                                                                        immediately=True)
+    from chan.asgi import backend
+    Channel("backend.counter-response", channel_layer=backend).send(msg,
+                                                                    immediately=True)
