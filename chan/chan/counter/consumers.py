@@ -27,7 +27,7 @@ class WebsocketConsumer(JsonWebsocketConsumer):
 
 
 def counter_response_forwarder(message, **kwargs):
-    print(f"counter_response {message}")
+    print("counter_response %r" % message)
 
     groups.status_updates.send({'text': json.dumps(message.content)},
                                immediately=True)

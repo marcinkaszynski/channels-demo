@@ -4,7 +4,7 @@ from chan.counter.channels import channels
 
 def counter(message, **kwargs):
     seconds = message.content.get("seconds", 0)
-    print(f"counter_request {message.content}, counting to {seconds}")
+    print("counter_request %r, counting to %r" % (message.content, seconds))
 
     for i in range(seconds):
         time.sleep(1)
